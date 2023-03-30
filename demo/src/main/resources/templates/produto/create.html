@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<input type="button" onclick="getCategoria()" value="Carregar Categorias" />
+<input type="button" onclick="getFornecedor()" value="Carregar Fornecedores" />
+
+<form method="post" action="/produto/create">
+
+	<p>Descrição: <input type="text" name="descricao" id="descricao"></p>
+	<p>Preço: <input type="number" name="preco" id="preco"></p>
+	
+	<select name="categoria" id="categoria"></select>
+	<select name="fornecedor" id="fornecedor"></select>
+	
+	<br>
+	<input type="submit" value="Salvar">
+
+</form>
+
+</body>
+
+<script>
+
+function getCategoria() {
+	document.getElementById("categoria").innerHTML = ""
+	
+	fetch("/produto/categorias")
+	.then(response => response.json())
+	.then(data => data.forEach(populateCategoria))
+	.catch(error => alert(error))
+}
+
+function populateCategoria(data) {
+	document.getElementById("categoria").innerHTML += 
+		"<option value=\"" + data.id + "\">" + data.descricao + "</option>"
+}
+
+function getFornecedor() {
+	document.getElementById("fornecedor").innerHTML = ""
+	
+	fetch("/produto/fornecedores")
+	.then(response => response.json())
+	.then(data => data.forEach(populateFornecedor))
+	.catch(error => alert(error))
+}
+
+function populateFornecedor(data) {
+	document.getElementById("fornecedor").innerHTML += 
+		"<option value=\"" + data.id + "\">" + data.nome + "</option>"
+}
+
+</script>
+
+</html>

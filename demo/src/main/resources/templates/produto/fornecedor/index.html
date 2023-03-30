@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div class="container">
+		<a type="button" class="btn btn-primary mt-2" href="fornecedor/create">Criar fornecedor</a>
+		<a type="button" class="btn btn-primary mt-2" href="/">Voltar</a>
+		
+		<table>
+		<thead>
+			<th>Id</th>
+			<th>Nome</th>
+			<th>Edereço</th>
+			<th>Telefone</th>
+		</thead>
+		<tbody>
+			<tr th:each="fornecedor : ${listForns}">
+				<td th:text="${fornecedor.getId()}"></td>
+				<td th:text="${fornecedor.getNome()}"></td>
+				<td th:text="${fornecedor.getEndereco()}"></td>
+				<td th:text="${fornecedor.getTelefone()}"></td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+
+</body>
+</html>

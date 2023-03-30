@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body onload="getCategoria()">
+
+	<div class="container">
+		<a type="button" class="btn btn-primary mt-2" href="produto/create">Criar produtos</a>
+		<a type="button" class="btn btn-primary mt-2" href="/">Voltar</a>
+		
+		<br>
+		<select onchange="updateFilter()" id="categoria">
+		<option selected disabled value="">Selectione o Filtro</option>
+		</select>
+		
+		<table>
+		<thead>
+			<th>Id</th>
+			<th>Descriçao</th>
+		</thead>
+		<tbody id="produtos">
+			<tr th:each="produto : ${listProds}" th:id="${produto.getId()}">
+				<td th:text="${produto.getId()}"></td>
+				<td th:text="${produto.getDescricao()}"></td>
+				<td th:text="${produto.getCategoria()}" hidden></td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+
+
+</body>
+
+<script>
+
+function getCategoria() {
+	document.getElementById("categoria").innerHTML = "<option selected disabled value=\"\">Selectione o Filtro</option>"
+	
+	fetch("/produto/categorias")
+	.then(response => response.json())
+	.then(data => data.forEach(populateCategoria))
+	.catch(error => alert(error))
+}
+
+function populateCategoria(data) {
+	document.getElementById("categoria").innerHTML += 
+		"<option value=\"" + data.id + "\">" + data.descricao + "</option>"
+}
+
+function updateFilter() {
+	document.getElementById("produtos").innerHTML = ""
+	
+	fetch("/produto/produtos")
+	.then(response => response.json())
+	.then(data => data.forEach(populateProdutos))
+	.catch(error => alert(error))
+}
+
+function populateProdutos(data) {
+	var categoriaId = document.getElementById("categoria").value
+	if (data.categoria == categoriaId) {
+		document.getElementById("produtos").innerHTML += 
+			"<tr><td>" + data.id + "</td><td>" + data.descricao + "</td></tr>"
+	}
+}
+
+</script>
+
+</html>
